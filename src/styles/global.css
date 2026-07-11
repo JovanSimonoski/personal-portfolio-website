@@ -1,0 +1,84 @@
+@import "@fontsource-variable/inter";
+@import "@fontsource-variable/space-grotesk";
+@import "@fontsource-variable/jetbrains-mono";
+@import "tailwindcss";
+
+@theme {
+  /* palette — light "security" scheme */
+  --color-paper: #f7f9f9; /* page background */
+  --color-mist: #ebf1f0; /* tinted panels */
+  --color-line: #d7e0df; /* hairline borders */
+  --color-ink: #12292e; /* headings, terminal bg */
+  --color-steel: #43585e; /* secondary text */
+  --color-teal: #0f766e; /* primary accent */
+  --color-teal-deep: #0b5d57; /* accent for small text / hover */
+  --color-signal: #34d399; /* terminal "ok" green (dark bg only) */
+
+  /* type */
+  --font-display: "Space Grotesk Variable", "Inter Variable", system-ui, sans-serif;
+  --font-body: "Inter Variable", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono Variable", ui-monospace, "Cascadia Code", Consolas, monospace;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+
+  ::selection {
+    background-color: color-mix(in srgb, var(--color-teal) 22%, transparent);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-teal);
+    outline-offset: 2px;
+  }
+}
+
+/* Faint circuit-grid texture behind the hero, fading out radially. */
+.hero-grid {
+  background-image:
+    linear-gradient(to right, color-mix(in srgb, var(--color-teal) 8%, transparent) 1px, transparent 1px),
+    linear-gradient(to bottom, color-mix(in srgb, var(--color-teal) 8%, transparent) 1px, transparent 1px);
+  background-size: 30px 30px;
+  -webkit-mask-image: radial-gradient(120% 90% at 70% 0%, black 30%, transparent 78%);
+  mask-image: radial-gradient(120% 90% at 70% 0%, black 30%, transparent 78%);
+}
+
+.cursor-blink {
+  animation: cursor-blink 1.1s steps(1) infinite;
+}
+
+@keyframes cursor-blink {
+  0%, 49% { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cursor-blink {
+    animation: none;
+  }
+}
+
+/* Scroll-reveal. Scoped to html.js so content stays visible without JS,
+   and gated on prefers-reduced-motion. */
+@media (prefers-reduced-motion: no-preference) {
+  html.js .reveal {
+    opacity: 0;
+    transform: translateY(14px);
+    transition:
+      opacity 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+      transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  html.js .reveal.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

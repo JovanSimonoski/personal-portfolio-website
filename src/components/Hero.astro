@@ -1,0 +1,147 @@
+---
+import Icon from './Icon.astro';
+import { identity } from '../data/profile';
+---
+
+<section id="top" class="relative overflow-hidden">
+  <div class="hero-grid absolute inset-0" aria-hidden="true"></div>
+
+  <div
+    class="relative mx-auto grid w-full max-w-5xl gap-12 px-5 pt-16 pb-20 sm:px-8 md:pt-24 lg:grid-cols-[1.1fr_0.9fr] lg:items-center lg:gap-16 lg:pb-28"
+  >
+    <div>
+      <p class="font-mono text-sm text-teal-deep">
+        <span class="select-none text-steel">$ </span>whoami
+      </p>
+      <h1
+        class="mt-4 font-display text-4xl font-bold tracking-tight text-ink sm:text-5xl lg:text-6xl"
+      >
+        {identity.name}<span class="cursor-blink text-teal" aria-hidden="true">_</span>
+      </h1>
+      <p class="mt-4 text-lg font-medium text-ink">
+        Junior TA @ FCSE UKIM <span aria-hidden="true" class="text-steel/60">|</span> Software Engineer @ CodeChem
+      </p>
+      <p class="mt-3 max-w-xl text-[15px] leading-relaxed text-steel">
+        Cybersecurity-focused software engineer and master’s student working across trust &
+        identity, post-quantum cryptography, and teaching the next generation of engineers.
+      </p>
+      <p class="mt-4 flex items-center gap-1.5 font-mono text-[13px] text-steel">
+        <Icon name="map-pin" class="size-3.5 text-teal" />
+        {identity.location}
+      </p>
+
+      <div class="mt-8 flex flex-wrap items-center gap-3">
+        <a
+          href="#projects"
+          class="inline-flex items-center gap-2 rounded-md bg-teal px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-teal-deep"
+        >
+          View projects
+          <Icon name="arrow-up-right" class="size-4" />
+        </a>
+        <a
+          href="#experience"
+          class="inline-flex items-center gap-2 rounded-md border border-line bg-white/70 px-5 py-2.5 text-sm font-semibold text-ink transition-colors hover:border-teal hover:text-teal-deep"
+        >
+          Experience
+        </a>
+        <div class="flex items-center gap-2">
+          <a
+            href={identity.github}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="GitHub profile"
+            class="inline-flex size-10 items-center justify-center rounded-md border border-line bg-white/70 text-steel transition-colors hover:border-teal hover:text-teal-deep"
+          >
+            <Icon name="github" class="size-4.5" />
+          </a>
+          <a
+            href={`mailto:${identity.emails[0]}`}
+            aria-label={`Email ${identity.emails[0]}`}
+            class="inline-flex size-10 items-center justify-center rounded-md border border-line bg-white/70 text-steel transition-colors hover:border-teal hover:text-teal-deep"
+          >
+            <Icon name="mail" class="size-4.5" />
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Signature element: terminal-style identity verification.
+         Decorative flavor — the same facts appear as visible hero text. -->
+    <div class="reveal" aria-hidden="true">
+      <div
+        id="hero-terminal"
+        class="overflow-hidden rounded-xl border border-ink/20 bg-ink shadow-2xl shadow-teal/10"
+      >
+        <div class="flex items-center gap-1.5 border-b border-white/10 px-4 py-3">
+          <span class="size-2.5 rounded-full bg-[#fca5a5]"></span>
+          <span class="size-2.5 rounded-full bg-[#fcd34d]"></span>
+          <span class="size-2.5 rounded-full bg-[#6ee7b7]"></span>
+          <span class="ml-3 font-mono text-[11px] tracking-wide text-white/50">
+            jovan@skopje: ~/verify
+          </span>
+        </div>
+        <div class="px-5 py-5 font-mono text-[13px] leading-7 text-white/90">
+          <p data-line>
+            <span class="text-signal">$</span>
+            <span data-typed>verify --identity jovan.simonoski</span>
+          </p>
+          <p data-line class="text-white/60">
+            ▸ resolving public record<span class="text-white/30"> ..........</span>
+            <span class="text-signal">ok</span>
+          </p>
+          <p data-line class="text-white/60">▸ role&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;software engineer · junior TA</p>
+          <p data-line class="text-white/60">▸ orgs&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CodeChem · FCSE (FINKI) · GÉANT</p>
+          <p data-line class="text-white/60">▸ focus&nbsp;&nbsp;&nbsp;&nbsp;trust &amp; identity · post-quantum crypto</p>
+          <p data-line class="text-signal">✓ identity verified — trust chain valid</p>
+          <p data-line>
+            <span class="text-signal">$</span>
+            <span class="cursor-blink inline-block h-4 w-2 translate-y-0.5 bg-signal/80"></span>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  // Terminal "identity verification" sequence. The lines are rendered
+  // statically in the HTML (so no-JS and reduced-motion users see the final
+  // state); with motion allowed, we hide them and replay: type the command,
+  // then reveal the output line by line.
+  const term = document.getElementById('hero-terminal');
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (term && !reduceMotion) {
+    const lines = Array.from(term.querySelectorAll<HTMLElement>('[data-line]'));
+    const typed = term.querySelector<HTMLElement>('[data-typed]');
+    const command = typed?.textContent ?? '';
+
+    lines.slice(1).forEach((line) => {
+      line.style.visibility = 'hidden';
+    });
+    if (typed) typed.textContent = '';
+
+    const showLine = (index: number) => {
+      if (index >= lines.length) return;
+      const line = lines[index];
+      if (line) line.style.visibility = 'visible';
+      const pause = index === lines.length - 2 ? 500 : 240;
+      window.setTimeout(() => showLine(index + 1), pause);
+    };
+
+    const typeCommand = (index: number) => {
+      if (!typed) {
+        showLine(1);
+        return;
+      }
+      typed.textContent = command.slice(0, index);
+      if (index < command.length) {
+        window.setTimeout(() => typeCommand(index + 1), 26);
+      } else {
+        window.setTimeout(() => showLine(1), 350);
+      }
+    };
+
+    window.setTimeout(() => typeCommand(0), 500);
+  }
+</script>

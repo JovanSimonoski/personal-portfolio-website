@@ -1,0 +1,127 @@
+---
+import Icon from './Icon.astro';
+import { identity } from '../data/profile';
+
+const links = [
+  { href: '#about', label: 'about' },
+  { href: '#experience', label: 'experience' },
+  { href: '#education', label: 'education' },
+  { href: '#publications', label: 'publications' },
+  { href: '#projects', label: 'projects' },
+  { href: '#honors', label: 'honors' },
+  { href: '#skills', label: 'skills' },
+  { href: '#contact', label: 'contact' },
+];
+---
+
+<header class="sticky top-0 z-50 border-b border-line bg-paper/85 backdrop-blur">
+  <nav aria-label="Primary" class="mx-auto flex h-16 max-w-5xl items-center justify-between px-5 sm:px-8">
+    <a href="#top" class="font-mono text-sm font-medium text-ink transition-colors hover:text-teal-deep">
+      <span class="text-teal">~/</span>jovan.simonoski
+    </a>
+
+    <ul class="hidden items-center gap-5 md:flex lg:gap-6">
+      {
+        links.map((link) => (
+          <li>
+            <a
+              href={link.href}
+              class="font-mono text-[13px] text-steel transition-colors hover:text-teal-deep"
+            >
+              {link.label}
+            </a>
+          </li>
+        ))
+      }
+      <li>
+        <a
+          href={identity.github}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="GitHub profile"
+          class="inline-flex size-8 items-center justify-center rounded-md text-steel transition-colors hover:bg-mist hover:text-teal-deep"
+        >
+          <Icon name="github" class="size-4.5" />
+        </a>
+      </li>
+    </ul>
+
+    <button
+      id="nav-toggle"
+      type="button"
+      class="inline-flex size-10 items-center justify-center rounded-md border border-line text-ink transition-colors hover:bg-mist md:hidden"
+      aria-expanded="false"
+      aria-controls="mobile-menu"
+      aria-label="Open menu"
+    >
+      <span id="nav-icon-open" class="pointer-events-none"><Icon name="menu" class="size-5" /></span>
+      <span id="nav-icon-close" class="pointer-events-none hidden"><Icon name="x" class="size-5" /></span>
+    </button>
+  </nav>
+
+  <div id="mobile-menu" hidden class="border-t border-line bg-paper md:hidden">
+    <ul class="space-y-1 px-5 py-4">
+      {
+        links.map((link) => (
+          <li>
+            <a
+              href={link.href}
+              class="block rounded-md px-3 py-2.5 font-mono text-sm text-ink transition-colors hover:bg-mist hover:text-teal-deep"
+            >
+              <span class="select-none text-teal">$ </span>
+              {link.label}
+            </a>
+          </li>
+        ))
+      }
+      <li class="border-t border-line pt-2 mt-2">
+        <a
+          href={identity.github}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="flex items-center gap-2 rounded-md px-3 py-2.5 font-mono text-sm text-ink transition-colors hover:bg-mist hover:text-teal-deep"
+        >
+          <Icon name="github" class="size-4" />
+          github.com/JovanSimonoski
+        </a>
+      </li>
+    </ul>
+  </div>
+</header>
+
+<script>
+  const btn = document.getElementById('nav-toggle');
+  const menu = document.getElementById('mobile-menu');
+  const iconOpen = document.getElementById('nav-icon-open');
+  const iconClose = document.getElementById('nav-icon-close');
+
+  function setOpen(open: boolean) {
+    if (!btn || !menu) return;
+    btn.setAttribute('aria-expanded', String(open));
+    btn.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+    menu.toggleAttribute('hidden', !open);
+    iconOpen?.classList.toggle('hidden', open);
+    iconClose?.classList.toggle('hidden', !open);
+  }
+
+  btn?.addEventListener('click', () => {
+    setOpen(menu?.hasAttribute('hidden') ?? false);
+  });
+
+  // Close the drawer when a link inside it is activated.
+  menu?.addEventListener('click', (event) => {
+    if ((event.target as HTMLElement).closest('a')) setOpen(false);
+  });
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && menu && !menu.hasAttribute('hidden')) {
+      setOpen(false);
+      btn?.focus();
+    }
+  });
+
+  // Reset drawer state when crossing the desktop breakpoint.
+  window.matchMedia('(min-width: 768px)').addEventListener('change', (event) => {
+    if (event.matches) setOpen(false);
+  });
+</script>

@@ -1,0 +1,259 @@
+---
+import Base from '../layouts/Base.astro';
+import Nav from '../components/Nav.astro';
+import Hero from '../components/Hero.astro';
+import Section from '../components/Section.astro';
+import TimelineItem from '../components/TimelineItem.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import Icon from '../components/Icon.astro';
+import {
+  identity,
+  experience,
+  education,
+  publications,
+  projects,
+  certificates,
+  focusAreas,
+  languages,
+} from '../data/profile';
+
+const title = 'Jovan Simonoski - Software Engineer · Cybersecurity';
+const description =
+  'Portfolio of Jovan Simonoski - cybersecurity-focused software engineer at CodeChem and junior teaching assistant at FCSE (FINKI), working on trust & identity and post-quantum cryptography.';
+---
+
+<Base title={title} description={description}>
+  <Nav />
+
+  <main id="main">
+    <Hero />
+
+    <Section id="about" eyebrow="about" title="Security-minded, by default.">
+      <div class="reveal max-w-2xl space-y-4 text-[15px] leading-relaxed text-steel">
+        <p>
+          I’m a software engineer at CodeChem and a junior teaching
+          assistant at FCSE (FINKI) in Skopje, where I’m also pursuing a master’s degree in
+          Internet Technologies and Cyber Security.
+        </p>
+      </div>
+    </Section>
+
+    <Section id="experience" eyebrow="experience" title="Where I’ve worked." tinted>
+      <ol class="ml-1.5 space-y-10 border-l border-line">
+        {experience.map((item) => <TimelineItem {...item} />)}
+      </ol>
+    </Section>
+
+    <Section id="education" eyebrow="education" title="Academic background.">
+      <ol class="grid gap-6">
+        {
+          education.map((item) => (
+            <li class="reveal rounded-xl border border-line bg-white/70 p-6 shadow-sm">
+              <div class="flex flex-col gap-4 sm:flex-row sm:items-start">
+                <span class="inline-flex size-10 shrink-0 items-center justify-center rounded-lg bg-mist text-teal">
+                  <Icon name="graduation-cap" class="size-5" />
+                </span>
+                <div class="min-w-0">
+                  <p class="font-mono text-xs tracking-widest text-teal-deep uppercase">
+                    {item.period}
+                  </p>
+                  <h3 class="mt-1.5 font-display text-lg font-semibold text-ink">
+                    {item.degree}
+                  </h3>
+                  <p class="mt-0.5 text-sm text-steel">{item.school}</p>
+                  {item.gpa && (
+                    <p class="mt-3 inline-flex items-center gap-1.5 rounded-full border border-teal/30 bg-teal/5 px-3 py-1 font-mono text-xs font-medium text-teal-deep">
+                      <Icon name="award" class="size-3.5" />
+                      GPA {item.gpa}
+                    </p>
+                  )}
+                  {item.thesis && (
+                    <p class="mt-3 max-w-prose text-sm leading-relaxed text-steel">
+                      <span class="font-mono text-xs text-teal-deep">thesis › </span>
+                      <em>{item.thesis}</em>
+                    </p>
+                  )}
+                </div>
+              </div>
+            </li>
+          ))
+        }
+      </ol>
+    </Section>
+
+    <Section id="publications" eyebrow="publications" title="Research & papers." tinted>
+      <ol class="grid gap-6">
+        {
+          publications.map((pub) => (
+            <li class="reveal rounded-xl border border-line bg-white/70 p-6 shadow-sm">
+              <div class="flex flex-col gap-4 sm:flex-row sm:items-start">
+                <span class="inline-flex size-10 shrink-0 items-center justify-center rounded-lg bg-mist text-teal">
+                  <Icon name="file-text" class="size-5" />
+                </span>
+                <div class="min-w-0">
+                  <p class="inline-flex rounded-full border border-line bg-mist px-2.5 py-0.5 font-mono text-[11px] text-steel">
+                    {pub.venue}
+                  </p>
+                  <h3 class="mt-2 font-display text-lg font-semibold text-ink">
+                    “{pub.title}”
+                  </h3>
+                  <p class="mt-1.5 text-sm text-steel">
+                    {pub.authors.map((author, i) => (
+                      <>
+                        {i > 0 && ', '}
+                        {author === 'Jovan Simonoski' ? (
+                          <span class="font-semibold text-ink">{author}</span>
+                        ) : (
+                          author
+                        )}
+                      </>
+                    ))}
+                  </p>
+                </div>
+              </div>
+            </li>
+          ))
+        }
+      </ol>
+    </Section>
+
+    <Section id="projects" eyebrow="projects" title="Selected projects.">
+      <div class="reveal grid gap-6 sm:grid-cols-2">
+        {projects.map((project) => <ProjectCard {...project} />)}
+      </div>
+    </Section>
+
+    <Section id="honors" eyebrow="honors && ctf" title="Honors, awards & CTF." tinted>
+      <div class="grid gap-6 md:grid-cols-2">
+        <article class="reveal flex flex-col rounded-xl border border-line bg-white/70 p-6 shadow-sm">
+          <span class="inline-flex size-10 items-center justify-center rounded-lg bg-mist text-teal">
+            <Icon name="award" class="size-5" />
+          </span>
+          <h3 class="mt-4 font-display text-lg font-semibold text-ink">Best Students Award</h3>
+          <p class="mt-1 font-mono text-xs text-steel">FCSE (FINKI), Skopje · Apr 2026</p>
+          <p class="mt-3 text-sm leading-relaxed text-steel">
+            Awarded for an average grade above 9.5 across years I–IV of studies.
+          </p>
+        </article>
+
+        <article class="reveal flex flex-col rounded-xl border border-line bg-white/70 p-6 shadow-sm">
+          <span class="inline-flex size-10 items-center justify-center rounded-lg bg-mist text-teal">
+            <Icon name="flag" class="size-5" />
+          </span>
+          <h3 class="mt-4 font-display text-lg font-semibold text-ink">
+            Hack The Box University CTF 2025
+          </h3>
+          <p class="mt-1 font-mono text-xs text-steel">UKIM CTF team · supported by FINKI CIRT</p>
+          <p class="mt-3 flex items-baseline gap-2">
+            <span class="font-display text-4xl font-bold text-teal-deep">
+              22<span class="text-xl">nd</span>
+            </span>
+            <span class="font-mono text-sm text-steel">of 1014 universities</span>
+          </p>
+        </article>
+      </div>
+    </Section>
+
+    <Section id="certificates" eyebrow="certificates" title="Certificates.">
+      <ul class="grid gap-4 sm:grid-cols-2">
+        {
+          certificates.map((cert) => (
+            <li class="reveal flex items-center gap-4 rounded-xl border border-line bg-white/70 p-5 shadow-sm">
+              <span class="inline-flex size-10 shrink-0 items-center justify-center rounded-lg bg-mist text-teal">
+                <Icon name="badge-check" class="size-5" />
+              </span>
+              <div>
+                <p class="font-semibold text-ink">{cert.name}</p>
+                <p class="mt-0.5 font-mono text-xs text-steel">
+                  {cert.issuer} · {cert.year}
+                </p>
+              </div>
+            </li>
+          ))
+        }
+      </ul>
+    </Section>
+
+    <Section id="skills" eyebrow="skills && languages" title="Skills & languages." tinted>
+      <div class="grid gap-10 md:grid-cols-2">
+        <div class="reveal">
+          <h3 class="flex items-center gap-2 font-mono text-sm text-teal-deep">
+            <Icon name="terminal" class="size-4" />
+            focus areas
+          </h3>
+          <ul class="mt-4 flex flex-wrap gap-2">
+            {
+              focusAreas.map((skill) => (
+                <li class="rounded-md border border-line bg-white/70 px-3 py-1.5 font-mono text-[13px] text-ink">
+                  {skill}
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+        <div class="reveal">
+          <h3 class="flex items-center gap-2 font-mono text-sm text-teal-deep">
+            <Icon name="languages" class="size-4" />
+            languages
+          </h3>
+          <ul class="mt-4 max-w-sm">
+            {
+              languages.map((lang) => (
+                <li class="flex items-baseline justify-between border-b border-line py-3">
+                  <span class="font-medium text-ink">{lang.name}</span>
+                  <span class="font-mono text-xs text-steel">{lang.level}</span>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+      </div>
+    </Section>
+  </main>
+
+  <footer id="contact" class="scroll-mt-20 border-t border-line bg-mist/70">
+    <div class="mx-auto w-full max-w-5xl px-5 py-16 sm:px-8 md:py-20">
+      <p class="font-mono text-sm text-teal-deep">
+        <span class="select-none text-steel">$ </span>contact
+      </p>
+      <h2 class="mt-2 font-display text-3xl font-semibold tracking-tight text-ink md:text-4xl">
+        Get in touch.
+      </h2>
+      <p class="mt-3 max-w-md text-[15px] leading-relaxed text-steel">
+        Open to collaboration, research, and interesting security problems.
+      </p>
+      <ul class="mt-6 space-y-2.5 font-mono text-sm">
+        {
+          identity.emails.map((email) => (
+            <li>
+              <a
+                href={`mailto:${email}`}
+                class="inline-flex items-center gap-2 text-teal-deep underline decoration-teal/30 underline-offset-4 transition-colors hover:text-teal hover:decoration-teal"
+              >
+                <Icon name="mail" class="size-4" />
+                {email}
+              </a>
+            </li>
+          ))
+        }
+        <li>
+          <a
+            href={identity.github}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center gap-2 text-teal-deep underline decoration-teal/30 underline-offset-4 transition-colors hover:text-teal hover:decoration-teal"
+          >
+            <Icon name="github" class="size-4" />
+            github.com/JovanSimonoski
+          </a>
+        </li>
+      </ul>
+
+      <div
+        class="mt-14 flex flex-col gap-2 border-t border-line pt-6 text-sm text-steel sm:flex-row sm:items-center sm:justify-between"
+      >
+        <p>© 2026 Jovan Simonoski</p>
+      </div>
+    </div>
+  </footer>
+</Base>
