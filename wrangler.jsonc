@@ -1,6 +1,6 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "jovan-simonoski-portfolio",
+  "name": "personal-portfolio-website",
   "compatibility_date": "2026-07-01",
   // Static-assets-only deployment: no Worker script, Cloudflare just serves dist/.
   "assets": {
