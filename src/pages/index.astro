@@ -1,5 +1,7 @@
 ---
+import { Image } from 'astro:assets';
 import Base from '../layouts/Base.astro';
+import photo from '../assets/photo.jpg';
 import Nav from '../components/Nav.astro';
 import Hero from '../components/Hero.astro';
 import Section from '../components/Section.astro';
@@ -29,12 +31,36 @@ const description =
     <Hero />
 
     <Section id="about" eyebrow="about" title="Security-minded, by default.">
-      <div class="reveal max-w-2xl space-y-4 text-[15px] leading-relaxed text-steel">
-        <p>
-          I’m a software engineer at CodeChem and a junior teaching
-          assistant at FCSE (FINKI) in Skopje, where I’m also pursuing a master’s degree in
-          Internet Technologies and Cyber Security.
-        </p>
+      <div class="grid gap-12 md:grid-cols-[1fr_auto] md:items-center md:gap-16">
+        <div class="reveal max-w-2xl space-y-4 text-[15px] leading-relaxed text-steel">
+          <p>
+            I’m a software engineer at CodeChem and a junior teaching
+            assistant at FCSE (FINKI) in Skopje, where I’m also pursuing a master’s degree in
+            Internet Technologies and Cyber Security.
+          </p>
+        </div>
+        <figure class="reveal relative mx-auto w-fit md:mx-0">
+          <div
+            class="absolute inset-0 translate-x-3 translate-y-3 rounded-xl border border-teal/40"
+            aria-hidden="true"
+          >
+          </div>
+          <div class="relative overflow-hidden rounded-xl border border-line bg-white shadow-sm">
+            <Image
+              src={photo}
+              alt="Portrait of Jovan Simonoski"
+              width={512}
+              densities={[1, 2]}
+              class="block aspect-[4/5] w-56 object-cover object-[50%_35%] md:w-64"
+            />
+            <figcaption
+              class="flex items-center gap-1.5 border-t border-line bg-mist/60 px-3 py-2 font-mono text-[11px] text-steel"
+            >
+              <Icon name="shield-check" class="size-3.5 text-teal" />
+              identity: verified
+            </figcaption>
+          </div>
+        </figure>
       </div>
     </Section>
 
